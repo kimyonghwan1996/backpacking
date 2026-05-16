@@ -1,0 +1,9 @@
+services:
+  batch-job:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spark-batch-job
+    volumes:
+      # 결과 파일을 로컬에서 바로 확인 가능
+      - ./output:/app/output
