@@ -33,16 +33,17 @@ USER root
 WORKDIR /app
 
 # fat JAR 복사
-COPY --from=builder /build/target/scala-2.12/backpacking-assembly-0.1.0.jar /app/app.jar
+COPY --from=builder /build/target/scala-2.12/backpacker-assembly-0.1.0.jar /app/app.jar
 
-# 입력 데이터 복사
-COPY data/ /app/data/
+# 필요 디렉토리 생성
+RUN mkdir -p /app/data/warehouse /app/output /tmp/hive_metastore
 
-# 출력 디렉토리 생성
-RUN mkdir -p /app/output
+# spark-submit 실행 위치를 /app 으로 설정 (Derby metastore_db 가 /app 기준으로 생성됨)
+WORKDIR /app
 
 ENTRYPOINT ["/opt/spark/bin/spark-submit", \
   "--class", "com.example.BatchJob", \
   "--master", "local[*]", \
-  "--driver-memory", "1g", \
+  "--driver-memory", "4g", \
+  "--conf", "spark.driver.extraJavaOptions=-Dderby.system.home=/tmp/hive_metastore", \
   "/app/app.jar"]

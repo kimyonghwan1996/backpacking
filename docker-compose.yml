@@ -5,5 +5,9 @@ services:
       dockerfile: Dockerfile
     container_name: spark-batch-job
     volumes:
-      # 결과 파일을 로컬에서 바로 확인 가능
+      # ── 입력 데이터: 여기에 2019-Oct.csv, 2019-Nov.csv 를 배치하세요
+      - ./data/input:/app/data/input:ro
+      # ── Hive External Table 저장 경로 (Parquet+Snappy)
+      - ./data/warehouse:/app/data/warehouse
+      # ── WAU 결과 CSV
       - ./output:/app/output
