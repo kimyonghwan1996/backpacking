@@ -22,12 +22,22 @@ object BatchJob {
 
     // ─── 2. CSV 읽기 ─────────────────────────────────────────────────────────
     val inputPath = "/app/data/input/sales.csv"
+    val NovPath = "/app/data/input/2019-Nov.csv"
+    val OctPath = "/app/data/input/2019-Oct.csv"
 
-    val rawDf = spark.read
+    val OctDf = spark.read
       .option("header", "true")
       .option("inferSchema", "true")
       .option("encoding", "UTF-8")
-      .csv(inputPath)
+      .csv(OctPath)
+    
+    val NovDf = spark.read
+      .option("header", "true")
+      .option("inferSchema", "true")
+      .option("encoding", "UTF-8")
+      .csv(NovPath)
+      
+    val rawDf = OctDf.union(NovDf)
 
     println(s"\n[INFO] 원본 데이터 로드 완료 — 총 ${rawDf.count()} 건\n")
     rawDf.printSchema()
