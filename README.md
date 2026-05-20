@@ -707,24 +707,3 @@ SparkSession.builder()
 from_utc_timestamp(col_in_utc, "Asia/Seoul")  // UTC → KST
 to_utc_timestamp(col_in_kst, "Asia/Seoul")    // KST → UTC
 ```
-
----
-
-## 📚 참고 자료
-
-- [Apache Spark 공식 문서](https://spark.apache.org/docs/latest/)
-- [Scala 공식 가이드](https://docs.scala-lang.org/)
-- [SBT 완벽 가이드](https://www.scala-sbt.org/1.x/docs/)
-- [Hive 파티셔닝](https://cwiki.apache.org/confluence/display/Hive/Partitioned+tables)
-- [Parquet 포맷](https://parquet.apache.org/)
-
----
-
-## 📝 라이선스
-
-MIT License - 자유롭게 사용, 수정, 배포 가능합니다.
-
----
-
-**작성일**: 2026-05-20  
-**프로젝트명**: Backpacker - E-Commerce User Activity Batch Processing
