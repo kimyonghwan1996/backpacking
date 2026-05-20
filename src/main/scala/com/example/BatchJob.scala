@@ -127,7 +127,6 @@ object BatchJob {
       .withColumn("event_date",
         date_format($"event_time_kst", "yyyy-MM-dd"))
       .filter($"event_time".isNotNull && $"user_id".isNotNull)
-      // .drop("event_time") 은 삭제합니다 (event_time 컬럼이 이후에도 필요하기 때문)
 
     // ── 세션 ID 생성 (전체 데이터 기준 — 날짜 경계 무관)
     // count()/cache() 제거 → 1억 건 OOM 방지
