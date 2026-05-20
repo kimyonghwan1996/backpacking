@@ -11,3 +11,6 @@ services:
       - ./data/warehouse:/app/data/warehouse
       # ── WAU 결과 CSV
       - ./output:/app/output
+      # - ./src:/app/src
+    ports:
+      - "4040:4040"

@@ -115,6 +115,8 @@ object BatchJob {
       .schema(inputSchema())
       .csv(s"$INPUT_PATH/*.csv")
 
+    println("[INFO] 데이터 개수 : " + rawDf.count())
+
     // ── UTC → KST 변환, event_date 파티션 컬럼 추가
     val kstDf = rawDf
       .withColumn("event_time",
@@ -124,7 +126,7 @@ object BatchJob {
       .withColumn("event_date",
         date_format($"event_time_kst", "yyyy-MM-dd"))
       .filter($"event_time".isNotNull && $"user_id".isNotNull)
-      .drop("event_time")
+      // .drop("event_time") 은 삭제합니다 (event_time 컬럼이 이후에도 필요하기 때문)
 
     // ── 세션 ID 생성 (전체 데이터 기준 — 날짜 경계 무관)
     // count()/cache() 제거 → 1억 건 OOM 방지
@@ -162,6 +164,12 @@ object BatchJob {
         "brand", "price", "user_id", "user_session",
         "session_id", "event_date"
       )
+
+      println("[INFO] ========================================================")
+      println("[INFO] 대규모 Window 연산(세션 정렬) 및 Parquet 저장을 시작합니다.")
+      println("[INFO] (1억 건 처리 시 로컬 환경에서 수십 분 이상 소요될 수 있습니다.)")
+      println("[INFO] 진행 상황은 http://localhost:4040 (Spark UI)에서 확인하세요.")
+      println("[INFO] ========================================================")
 
       sessionDf
         .filter($"event_date".isin(pendingDates: _*))
