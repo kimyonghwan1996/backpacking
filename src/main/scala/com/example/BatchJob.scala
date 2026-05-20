@@ -114,6 +114,7 @@ object BatchJob {
       .option("nullValue", "")
       .schema(inputSchema())
       .csv(s"$INPUT_PATH/*.csv")
+      // .limit(50000)
 
     println("[INFO] 데이터 개수 : " + rawDf.count())
 
@@ -233,7 +234,7 @@ object BatchJob {
     println("  WAU (Weekly Active Users) 계산")
     println("=" * 65)
 
-    // ── 6-a: user_id 기준 WAU ──────────────────────────────────────────────────
+    // ── user_id 기준 WAU ──────────────────────────────────────────────────
     val wauUserQuery =
       """
         |SELECT
@@ -252,7 +253,7 @@ object BatchJob {
     val wauByUser = spark.sql(wauUserQuery)
     wauByUser.show(100, truncate = false)
 
-    // ── 6-b: session_id 기준 WAU ───────────────────────────────────────────────
+    // ── session_id 기준 WAU ───────────────────────────────────────────────
     val wauSessionQuery =
       """
         |SELECT
